@@ -1,5 +1,10 @@
 from django.db import models
 
+"""
+posts = Post.objects.all()
+posts = Post.objects.get(id=1) только универсальное значение
+posts = Post.objects.filter()
+"""
 
 class Post(models.Model):
     name = models.CharField(max_length=255)
