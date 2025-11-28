@@ -8,4 +8,3 @@ def test_view(request):
 def html_view(request):
     return render(request, "base.html")
 
-# Create your views here.
