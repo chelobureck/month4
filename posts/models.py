@@ -8,9 +8,11 @@ posts = Post.objects.filter()
 
 class Post(models.Model):
     name = models.CharField(max_length=255)
-    contet = models.CharField(max_length=1000, null=True, blank=True)
+    content = models.CharField(max_length=1000, null=True, blank=True)
+    rate = models.IntegerField(default=0, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
+
     def __str__(self) -> str:
-        return f"{self.name} - {self.contet}"
+        return f"{self.name} - {self.content}"

@@ -9,6 +9,12 @@ def test_view(request):
 def html_view(request):
     return render(request, "base.html")
 
-def view_posts(request):
+def list_view(request):
     posts = Post.objects.all()
-    return render(request, "post/posts_view.html", context={"posts": posts})
+    return render(request, "post/list_view.html", context={"posts": posts})
+
+def post_detail_view(request, post_id):
+    posts = Post.objects.filter(id=post_id).first()
+    if not posts:
+        return redirect("/posts/")
+    return render(request, "post/post_detail.html", context={"post": posts})
