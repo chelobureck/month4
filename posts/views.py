@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from random import randint
 from posts.models import Post
-from posts.forms import PostCrateForm
+from posts.forms import PostCrateForm, PostModelForm
 
 def test_view(request):
     return HttpResponse(f"This is a test view {randint(1, 1000)}")
@@ -24,17 +24,13 @@ def post_detail_view(request, post_id):
 
 def create_post_view(request):
     if request.method == "POST":
-        form = PostCrateForm(request.POST, request.FILES)
+        form = PostModelForm(request.POST, request.FILES)
         if form.is_valid():
-            image = form.cleaned_data.get("image")
-            title = form.cleaned_data.get("title")
-            content = form.cleaned_data.get("content")
-            rate = form.cleaned_data.get("rate")
-            post = Post.objects.create(
-                image=image,
-                title=title,
-                content=content,
-                rate=rate,
+            Post.objects.create(
+                image=form.cleaned_data.get("image"),
+                title=form.cleaned_data.get("title"),
+                content=form.cleaned_data.get("content"),
+                rate=form.cleaned_data.get("rate"),
             )
         else:
             return render(request, "post/create_post.html", context={"form": form})

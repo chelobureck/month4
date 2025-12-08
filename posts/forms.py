@@ -14,7 +14,7 @@ class PostCrateForm(forms.Form):
         content = clean_data.get("content")
         if not title and not content:
             raise forms.ValidationError("Заполните все поля")
-        if title.lower() == content.lower():
+        if title == content:
             raise forms.ValidationError("Тайтл не должен быть равен контенту")
         return clean_data
     
