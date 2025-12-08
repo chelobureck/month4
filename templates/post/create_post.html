@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load %}
+
+{% block content %}
+<h2>Создать новый пост</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="image">Фото:</label>
+    <input type="file" id="image" name="image" required><br><br>
+
+    <label for="title">Заголовок:</label><br>
+    <input type="text" id="title" name="title" required><br><br>
+    
+    <label for="content">Контент:</label><br>
+    <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+    
+    <label for="rate">Рейтинг:</label><br>
+    <input type="number" id="rate" name="rate" min="0" max="10" required><br><br>
+    
+    <button type="submit">Создать пост</button>
+</form>
+{% endblock %}

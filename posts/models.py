@@ -5,6 +5,14 @@ posts = Post.objects.all()
 posts = Post.objects.get(id=1) только универсальное значение
 posts = Post.objects.filter()
 """
+"""
+Post.objects.create(
+    name="Название поста",
+    content="Контент поста",
+    rate=5,
+)
+"""
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=255)
@@ -20,7 +28,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     image = models.ImageField(null=True, blank=True)
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     content = models.CharField(max_length=1000, null=True, blank=True)
     rate = models.IntegerField(default=0, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
@@ -31,4 +39,4 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self) -> str:
-        return f"{self.name} - {self.content}"
+        return f"{self.title} - {self.content}"
