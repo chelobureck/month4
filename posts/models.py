@@ -40,3 +40,12 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return f"{self.title} - {self.content}"
+    
+class Comment(models.Model):
+    content = models.CharField(max_length=500)
+
+    # связи
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+
+    def __str__(self) -> str:
+        return f"{self.content}"

@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 users_paterns = [
     path('register/', register_view), # type: ignore
     path('login/', login_view), # type: ignore
-    path('logout/', logut),
+    path('loguot/', logut),
     ]
 
 urlpatterns = users_paterns + [

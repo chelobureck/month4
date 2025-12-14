@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from random import randint
-from posts.models import Post
-from posts.forms import PostCrateForm, PostModelForm
+from posts.models import Post, Comment
+from posts.forms import CommentForm, PostCrateForm, PostModelForm
 from django.contrib.auth.decorators import login_required
 
 def test_view(request):
@@ -21,9 +21,23 @@ def list_view(request):
 def post_detail_view(request, post_id):
     if request.method == "GET":
         posts = Post.objects.filter(id=post_id).first()
+        comment = CommentForm()
+        comment_for_model = Comment.objects.filter(post_id=post_id)
         if not posts:
-            return redirect("/posts/")
-        return render(request, "post/post_detail.html", context={"post": posts})
+            return redirect("/list_view/")
+        return render(request, "post/post_detail.html", context={"post": posts, "comment": comment , "comment_for_model": comment_for_model})
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        posts = Post.objects.filter(id=post_id).first()
+        comment_for_model = Comment.objects.filter(post_id=post_id)
+        if form.is_valid():
+            comment = form.cleaned_data.get("content")
+            Comment.objects.create(
+                content=comment,
+                post=posts,
+            )
+            return render(request, "post/post_detail.html", context={"post": posts, "comment": comment , "comment_for_model": comment_for_model})
+        return redirect(f"/list_view/{post_id}/")
 
 @login_required(login_url='/login/') # type: ignore
 def create_post_view(request):

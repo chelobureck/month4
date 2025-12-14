@@ -22,3 +22,11 @@ class PostModelForm(forms.ModelForm):
     class Meta:
             model = Post
             fields = ["image", "title", "content", "rate"]
+
+class CommentForm(forms.Form):
+    content = forms.CharField(max_length=500)
+
+    def clean_content(self):
+        clean_data = super().clean()
+        content = clean_data.get("content")
+        return content
