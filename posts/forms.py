@@ -1,5 +1,5 @@
 from django import forms
-from posts.models import Post
+from posts.models import Category, Post, Tag
 
 
 class PostCrateForm(forms.Form):
@@ -30,3 +30,20 @@ class CommentForm(forms.Form):
         clean_data = super().clean()
         content = clean_data.get("content")
         return content
+    
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=100, required=False)
+    category_id = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
+    tags_ids = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
+    orderings = (
+        ("rate", "По рейтингу по возрастанию"),
+        ("-rate", "По рейтингу по убыванию"),
+        ("title", "По названию по возрастанию"),
+        ("-title", "По названию по убыванию"),
+        (None, "Без сортировки"),
+    )
+    orderings = forms.ChoiceField(choices=orderings, required=False)
+
+    def clean_search(self):
+        clean_data = super().clean()
+        return clean_data
