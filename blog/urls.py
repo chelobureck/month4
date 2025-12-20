@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from posts.views import test_view, html_view, list_view, post_detail_view, create_post_view
-from users.views import login_view, logut, register_view
+from django.contrib.auth.decorators import login_required
+from posts.views import test_view, html_view, ListViewClass, post_detail_view, create_post_view
+from users.views import login_view, logut, register_view, profile_view, update_post_view
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,12 +26,14 @@ users_paterns = [
     path('register/', register_view), # type: ignore
     path('login/', login_view), # type: ignore
     path('loguot/', logut),
+    path('profile/', profile_view), # type: ignore
+    path('profile/list_view/update/<int:post_id>/', update_post_view), # type: ignore
     ]
 
 urlpatterns = users_paterns + [
     path('admin/', admin.site.urls),
     path("", html_view),
-    path("list_view/", list_view), # type: ignore
+    path("list_view/", login_required(ListViewClass.as_view(), login_url='/login/')), 
     path("list_view/<int:post_id>", post_detail_view), # type: ignore
     path("list_view/create/", create_post_view), # type: ignore
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
